@@ -7,13 +7,20 @@ import { AllExceptionsFilter } from './common/filters/http-exception.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  
   // CORS
-  app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-  });
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  process.env.VERCEL_URL && `https://${process.env.VERCEL_URL}`,
+  'http://localhost:3000',
+].filter(Boolean);
+
+app.enableCors({
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+});
 
   // Filtro global de errores
   app.useGlobalFilters(new AllExceptionsFilter());
@@ -45,10 +52,11 @@ async function bootstrap() {
     },
   });
 
-  const port = process.env.PORT || 4000;
-  await app.listen(port);
+  const port = Number(process.env.PORT) || 4000;
+await app.listen(port, '0.0.0.0');
   console.log(`\n🚀 Backend corriendo en http://localhost:${port}`);
   console.log(`📚 Swagger docs en http://localhost:${port}/api/docs\n`);
 }
 
 bootstrap();
+
