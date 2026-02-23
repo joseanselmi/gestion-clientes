@@ -52,7 +52,7 @@ app.enableCors({
     },
   });
 
-  const port = process.env.PORT || 4000;
+  const port = process.env.PORT || 3000;
 await app.listen(port, '0.0.0.0');
   console.log(`\n🚀 Backend corriendo en http://localhost:${port}`);
   console.log(`📚 Swagger docs en http://localhost:${port}/api/docs\n`);
