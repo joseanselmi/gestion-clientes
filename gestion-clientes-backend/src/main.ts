@@ -7,18 +7,9 @@ import { AllExceptionsFilter } from './common/filters/http-exception.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-
-  // CORS
-const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  process.env.VERCEL_URL && `https://${process.env.VERCEL_URL}`,
-  'http://localhost:3000',
-].filter(Boolean);
-
+// CORS
 app.enableCors({
-  origin: allowedOrigins,
-  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  origin: true,
   credentials: true,
 });
 
